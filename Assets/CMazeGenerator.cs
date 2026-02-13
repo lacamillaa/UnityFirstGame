@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CMazeGenerator : MonoBehaviour
@@ -8,6 +10,66 @@ public class CMazeGenerator : MonoBehaviour
     [SerializeField] private CMazeCell Prefab;
 
     private CMazeCell[,] Cells;
+
+    public List<CMazeCell> GetNeighbors(CMazeCell _cell)
+    {
+        List<CMazeCell> _neighbors = new List<CMazeCell>();
+
+        int x = (int)_cell.transform.position.x;
+        int z = (int)_cell.transform.position.z;
+
+        if(x / 5 + 1 < Width)
+        {
+            var right = Cells[x / 5 + 1, z];
+            if(!right.IsVisited)
+            {
+                _neighbors.Add(right);
+            }
+        }
+        if (x / 5 - 1 >= 0)
+        {
+            var left = Cells[x / 5 - 1, z];
+            if (!left.IsVisited)
+            {
+                _neighbors.Add(left);
+            }
+        }
+        if (z / 5 + 1 < Depth)
+        {
+            var back = Cells[x, z / 5 + 1];
+            if (!back.IsVisited)
+            {
+                _neighbors.Add(back);
+            }
+        }
+        if (z / 5 - 1 >= 0)
+        {
+            var front = Cells[x, z / 5 - 1];
+            if (!front.IsVisited)
+            {
+                _neighbors.Add(front);
+            }
+        }
+
+        return _neighbors;
+    }
+
+    public CMazeCell? GetNextCell(CMazeCell _cell)
+    {
+        var _neighbors = GetNeighbors(_cell);
+
+        System.Random r = new System.Random();
+
+        if(_neighbors.Count == 0)
+        {
+            return null; 
+        }
+        else
+        {
+            int n = r.Next(0, _neighbors.Count - 1);
+            return _neighbors[n];
+        }
+    }
 
     void Start()
     {
