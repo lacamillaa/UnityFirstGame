@@ -15,8 +15,8 @@ public class CMazeGenerator : MonoBehaviour
     {
         List<CMazeCell> _neighbors = new List<CMazeCell>();
 
-        int x = (int)_cell.transform.position.x / 5;
-        int z = (int)_cell.transform.position.z / 5;
+        int x = (int)_cell.transform.position.x / (int)Prefab.transform.localScale.x;
+        int z = (int)_cell.transform.position.z / (int)Prefab.transform.localScale.z;
 
         if(x + 1 < Width)
         {
