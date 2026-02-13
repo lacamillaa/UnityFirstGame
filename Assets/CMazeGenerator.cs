@@ -112,8 +112,12 @@ public class CMazeGenerator : MonoBehaviour
         currentCell.Visit();
         ClearWalls(previousCell, currentCell);
 
-        CMazeCell nextCell = GetNextCell(currentCell);
-        if (nextCell != null) GenerateMaze(currentCell, nextCell);
+        CMazeCell nextCell;
+        do 
+        {
+            nextCell = GetNextCell(currentCell);
+            if (nextCell != null) GenerateMaze(currentCell, nextCell); 
+        } while (nextCell != null);
     }
 
     void Start()
