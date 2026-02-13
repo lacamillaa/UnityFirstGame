@@ -15,36 +15,36 @@ public class CMazeGenerator : MonoBehaviour
     {
         List<CMazeCell> _neighbors = new List<CMazeCell>();
 
-        int x = (int)_cell.transform.position.x;
-        int z = (int)_cell.transform.position.z;
+        int x = (int)_cell.transform.position.x / 5;
+        int z = (int)_cell.transform.position.z / 5;
 
-        if(x / 5 + 1 < Width)
+        if(x + 1 < Width)
         {
-            var right = Cells[x / 5 + 1, z];
+            var right = Cells[x + 1, z];
             if(!right.IsVisited)
             {
                 _neighbors.Add(right);
             }
         }
-        if (x / 5 - 1 >= 0)
+        if (x - 1 >= 0)
         {
-            var left = Cells[x / 5 - 1, z];
+            var left = Cells[x - 1, z];
             if (!left.IsVisited)
             {
                 _neighbors.Add(left);
             }
         }
-        if (z / 5 + 1 < Depth)
+        if (z + 1 < Depth)
         {
-            var back = Cells[x, z / 5 + 1];
+            var back = Cells[x, z + 1];
             if (!back.IsVisited)
             {
                 _neighbors.Add(back);
             }
         }
-        if (z / 5 - 1 >= 0)
+        if (z - 1 >= 0)
         {
-            var front = Cells[x, z / 5 - 1];
+            var front = Cells[x, z - 1];
             if (!front.IsVisited)
             {
                 _neighbors.Add(front);
@@ -58,7 +58,8 @@ public class CMazeGenerator : MonoBehaviour
     {
         var _neighbors = GetNeighbors(_cell);
 
-        System.Random r = new System.Random();
+        System.Random r1 = new();
+        System.Random r2 = new();
 
         if(_neighbors.Count == 0)
         {
@@ -66,8 +67,11 @@ public class CMazeGenerator : MonoBehaviour
         }
         else
         {
-            int n = r.Next(0, _neighbors.Count - 1);
-            return _neighbors[n];
+            _neighbors.Sort((_cell1, _cell2) =>
+            {
+                return r2.Next() - r1.Next();
+            });
+            return _neighbors[0];
         }
     }
 
@@ -75,6 +79,8 @@ public class CMazeGenerator : MonoBehaviour
     {
         int x = (int)_curr.transform.position.x;
         int z = (int)_curr.transform.position.z;
+
+        if (_prev == null) return;
 
         if (x > _prev.transform.position.x)
         {
@@ -99,9 +105,21 @@ public class CMazeGenerator : MonoBehaviour
         }
     }
 
+    private void GenerateMaze(CMazeCell previousCell, CMazeCell currentCell)
+    {
+        if (currentCell == null) return;
+
+        currentCell.Visit();
+        ClearWalls(previousCell, currentCell);
+
+        CMazeCell nextCell = GetNextCell(currentCell);
+        if (nextCell != null) GenerateMaze(currentCell, nextCell);
+    }
+
     void Start()
     {
         Cells = new CMazeCell[Width, Depth];
+
         for(int x = 0; x < Width; x++)
         {
             for(int z = 0; z < Depth; z++)
@@ -109,6 +127,8 @@ public class CMazeGenerator : MonoBehaviour
                 Cells[x, z] = Instantiate(Prefab, new Vector3(5*x, 0, 5*z), Quaternion.identity);
             }
         }
+
+        GenerateMaze(null, Cells[0, 0]);
     }
 
     // Update is called once per frame
