@@ -564,6 +564,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3654155191104489451}
+  - component: {fileID: 6798169716747510425}
   m_Layer: 0
   m_Name: MazeCell
   m_TagString: Untagged
@@ -580,7 +581,7 @@ Transform:
   m_GameObject: {fileID: 7849683245292155858}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 2, z: 0}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -591,3 +592,20 @@ Transform:
   - {fileID: 5829214619570548563}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6798169716747510425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7849683245292155858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 893bc68a8248d8549a737ea09ecad8a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CMazeCell
+  LeftWall: {fileID: 6917665985985191506}
+  RightWall: {fileID: 764207650281436834}
+  FrontWall: {fileID: 4339682593834946146}
+  BackWall: {fileID: 6275104699127743321}
+  UnvisitedCell: {fileID: 3961614581967415703}
