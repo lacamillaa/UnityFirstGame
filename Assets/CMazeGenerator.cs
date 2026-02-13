@@ -71,6 +71,34 @@ public class CMazeGenerator : MonoBehaviour
         }
     }
 
+    public void ClearWalls(CMazeCell _prev, CMazeCell _curr)
+    {
+        int x = (int)_curr.transform.position.x;
+        int z = (int)_curr.transform.position.z;
+
+        if (x > _prev.transform.position.x)
+        {
+            _prev.ClearLeftWall();
+            _curr.ClearRightWall();
+            return;
+        }
+        if (x < _prev.transform.position.x)
+        {
+            _prev.ClearRightWall();
+            _curr.ClearLeftWall();
+        }
+        if (z > _prev.transform.position.z)
+        {
+            _prev.ClearBackWall();
+            _curr.ClearFrontWall();
+        }
+        if (z < _prev.transform.position.z)
+        {
+            _prev.ClearFrontWall();
+            _curr.ClearBackWall();
+        }
+    }
+
     void Start()
     {
         Cells = new CMazeCell[Width, Depth];
