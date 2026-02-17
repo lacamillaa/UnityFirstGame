@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class CMazeGenerator : MonoBehaviour
 {
@@ -128,11 +129,12 @@ public class CMazeGenerator : MonoBehaviour
         {
             for(int z = 0; z < Depth; z++)
             {
-                Cells[x, z] = Instantiate(Prefab, new Vector3(5*x, 0, 5*z), Quaternion.identity);
+                Cells[x, z] = Instantiate(Prefab, new Vector3(5 * x, 0, 5 * z), Quaternion.identity);
             }
         }
 
         GenerateMaze(null, Cells[0, 0]);
+        Cells[0, 0].ClearFrontWall();
     }
 
     // Update is called once per frame
