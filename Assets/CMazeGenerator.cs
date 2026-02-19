@@ -125,11 +125,14 @@ public class CMazeGenerator : MonoBehaviour
     {
         Cells = new CMazeCell[Width, Depth];
 
+        float scaleX = Prefab.transform.localScale.x;
+        float scaleZ = Prefab.transform.localScale.z;
+
         for(int x = 0; x < Width; x++)
         {
             for(int z = 0; z < Depth; z++)
             {
-                Cells[x, z] = Instantiate(Prefab, new Vector3(5 * x, 0, 5 * z), Quaternion.identity);
+                Cells[x, z] = Instantiate(Prefab, new Vector3(scaleX * x, 0, scaleZ * z), Quaternion.identity);
             }
         }
 
