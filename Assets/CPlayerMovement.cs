@@ -32,6 +32,7 @@ public class CPlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
     }
+
     private void Jump()
     {
         rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
@@ -60,6 +61,7 @@ public class CPlayerMovement : MonoBehaviour
     private void SpeedControl()
     {
         Vector3 limitVel = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+
         if (limitVel.magnitude > movementSpeed)
         {
             Vector3 newVel = limitVel.normalized * movementSpeed;
