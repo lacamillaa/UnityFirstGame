@@ -20,7 +20,7 @@ public class CMazeCell : MonoBehaviour
         int coin = r.Next(0, 100);
         if(coin >= 75)
         {
-            SetCoin();
+            // SetCoin();
         }
     }
 

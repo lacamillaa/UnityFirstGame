@@ -10,14 +10,26 @@ public class CMazeGenerator : MonoBehaviour
 
     [SerializeField] private CMazeCell Prefab;
 
+    [SerializeField] private Transform StartPoint;
+
     private CMazeCell[,] Cells;
+
+    private float floorWidth;
+    private float floorDepth;
+    private float scaleX;
+    private float scaleZ;
+    private float startX;
+    private float startZ;
+    private float f;
 
     public List<CMazeCell> GetNeighbors(CMazeCell _cell)
     {
         List<CMazeCell> _neighbors = new List<CMazeCell>();
 
-        int x = (int)_cell.transform.position.x / (int)Prefab.transform.localScale.x;
-        int z = (int)_cell.transform.position.z / (int)Prefab.transform.localScale.z;
+        int x = (int)((_cell.transform.position.x - startX) / scaleX);
+        int z = (int)((_cell.transform.position.z - startZ) / scaleZ);
+
+        Debug.Log(_cell.transform.position.x + " " + _cell.transform.position.z + " -> " + x + " " + z);
 
         if(x + 1 < Width)
         {
@@ -125,14 +137,25 @@ public class CMazeGenerator : MonoBehaviour
     {
         Cells = new CMazeCell[Width, Depth];
 
-        float scaleX = Prefab.transform.localScale.x;
-        float scaleZ = Prefab.transform.localScale.z;
+        floorWidth = StartPoint.localScale.x * 10;
+        floorDepth = StartPoint.localScale.z * 10;
 
-        for(int x = 0; x < Width; x++)
+        scaleX = floorWidth / Width;
+        scaleZ = floorDepth / Depth;
+
+        startX = StartPoint.position.x - floorWidth / 2;
+        startZ = StartPoint.position.z - floorDepth / 2;
+
+        Debug.Log("width: " + floorWidth + " depth: " + floorDepth);
+        Debug.Log("scale X: " + scaleX + " scale Z: " + scaleZ);
+        Debug.Log("start X: " + startX + " start Z: " + startZ);
+
+        for (int x = 0; x < Width; x++)
         {
             for(int z = 0; z < Depth; z++)
             {
-                Cells[x, z] = Instantiate(Prefab, new Vector3(scaleX * x, 0, scaleZ * z), Quaternion.identity);
+                Cells[x, z] = Instantiate(Prefab, new Vector3(
+                    startX + scaleX * x, StartPoint.position.y, startZ + scaleZ * z), Quaternion.identity);
             }
         }
 
