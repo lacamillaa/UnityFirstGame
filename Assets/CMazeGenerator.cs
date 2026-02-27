@@ -12,6 +12,10 @@ public class CMazeGenerator : MonoBehaviour
 
     [SerializeField] private Transform StartPoint;
 
+    [SerializeField] private Transform SpawnPoint;
+
+    [SerializeField] private Transform SpawnTarget;
+
     private CMazeCell[,] Cells;
 
     private float floorWidth;
@@ -20,7 +24,6 @@ public class CMazeGenerator : MonoBehaviour
     private float scaleZ;
     private float startX;
     private float startZ;
-    private float f;
 
     public List<CMazeCell> GetNeighbors(CMazeCell _cell)
     {
@@ -28,8 +31,6 @@ public class CMazeGenerator : MonoBehaviour
 
         int x = (int)((_cell.transform.position.x - startX) / scaleX);
         int z = (int)((_cell.transform.position.z - startZ) / scaleZ);
-
-        Debug.Log(_cell.transform.position.x + " " + _cell.transform.position.z + " -> " + x + " " + z);
 
         if(x + 1 < Width)
         {
@@ -140,8 +141,8 @@ public class CMazeGenerator : MonoBehaviour
         floorWidth = StartPoint.localScale.x * 10;
         floorDepth = StartPoint.localScale.z * 10;
 
-        scaleX = floorWidth / Width;
-        scaleZ = floorDepth / Depth;
+        scaleX = Prefab.transform.localScale.x;
+        scaleZ = Prefab.transform.localScale.z;
 
         startX = StartPoint.position.x - floorWidth / 2;
         startZ = StartPoint.position.z - floorDepth / 2;
@@ -155,17 +156,17 @@ public class CMazeGenerator : MonoBehaviour
             for(int z = 0; z < Depth; z++)
             {
                 Cells[x, z] = Instantiate(Prefab, new Vector3(
-                    startX + scaleX * x, StartPoint.position.y, startZ + scaleZ * z), Quaternion.identity);
+                    startX + scaleX * x, StartPoint.position.y, startZ + scaleZ * z), 
+                    Quaternion.identity);
             }
         }
 
-        GenerateMaze(null, Cells[0, 0]);
-        Cells[0, 0].ClearFrontWall();
-    }
+        SpawnPoint.position = new Vector3(
+            startX + floorWidth, StartPoint.position.y, startZ + floorDepth + 10
+        );
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        GenerateMaze(null, Cells[Width - 1, Depth - 1]);
+        Cells[Width - 1, Depth - 1].ClearBackWall();
+        Cells[0, 0].ClearFrontWall();
     }
 }

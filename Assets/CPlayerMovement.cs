@@ -27,10 +27,15 @@ public class CPlayerMovement : MonoBehaviour
 
     Rigidbody rb;
 
+    [SerializeField] private GameObject PlayerObj;
+    [SerializeField] private GameObject SpawnPoint;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
+        transform.position = SpawnPoint.transform.position;
+
     }
 
     private void Jump()
@@ -55,7 +60,6 @@ public class CPlayerMovement : MonoBehaviour
             Jump();
             Invoke(nameof(ResetJump), jumpCooldown);
         }
-
     }
 
     private void SpeedControl()
@@ -85,6 +89,7 @@ public class CPlayerMovement : MonoBehaviour
             rb.linearDamping = 0;
         }
     }
+
     private void MovePlayer()
     {
         Direzione = orientation.forward * InputVer + orientation.right * InputOri;
@@ -104,7 +109,4 @@ public class CPlayerMovement : MonoBehaviour
     {
         MovePlayer();
     }
-
-
-
 }
